@@ -45,7 +45,7 @@ Pfadsucher::Pfadsucher(const Karte& k) : karte_(k) {
 //     // - die optimale Lösung gefunden wurde oder
 //     // - feststeht, dass keine Lösung existiert
 //     repeat
-//         // Knoten mit dem geringsten f Wert aus der Open List entfernen
+//         // Knoten mit dem geringsten Heuristik(f) Wert aus der Open List entfernen
 //         currentNode := openlist.removeMin()
 //         // wurde das Ziel gefunden?
 //         if (currentNode == zielknoten) then
@@ -67,9 +67,7 @@ Pfadsucher::Pfadsucher(const Karte& k) : karte_(k) {
 //         // wenn der Nachfolgeknoten bereits auf der Closed List ist - tue nichts
 //         if closedlist.contains(successor) then
 //             continue
-//         // f Wert für den neuen Weg berechnen: g Wert des Vorgängers plus die Kosten der
-//         // gerade benutzten Kante plus die geschätzten Kosten von Nachfolger bis Ziel
-//         f := g(currentNode) + c(currentNode, successor) + h(successor)
+//         // Heuristik (f) Wert für den neuen Weg berechnen:
 //         // wenn der Nachfolgeknoten bereits auf der Open List ist,
 //         // aber der neue Weg länger ist als der alte - tue nichts
 //         if openlist.contains(successor) and f > openlist.find(successor).f then
@@ -86,43 +84,45 @@ Pfadsucher::Pfadsucher(const Karte& k) : karte_(k) {
 // end
 template<class Heuristik> std::list<Koordinate>  Pfadsucher::suche(Koordinate start, Koordinate ziel, Heuristik f)
 {  
-  std::list<Koordinate> pfad;
   HeuristikVergleich<Heuristik> vergleicheHeuristik(f);
   //fuege start zur offen Liste
   Knoten startknoten(start,0,karte_.abstand(start,ziel),start);
   offen_.push_back(startknoten);
   do {
-    std::list<Knoten>::const_iterator minele = min_element(offen_.begin(),offen_.end(),vergleicheHeuristik);
-    Knoten k = *minele;
-    offen_.remove(*minele);
-    geschlossen_.push_back(k);
-    if(k == ziel)  break;
-    std::list<Koordinate> nachbarn = karte_.nachbarn(k);
-    for(std::list<Koordinate>::const_iterator i = nachbarn.begin(); i != nachbarn.end() ; ++i) {
-        if(find(geschlossen_.begin(),geschlossen_.end(),*i) != geschlossen_.end()) continue;
-        Knoten nk(*i,k.g()+1,karte_.abstand(nk,ziel),k);
-        std::list<Knoten>::iterator offeniter =find(offen_.begin(),offen_.end(),*i);
-        if(offeniter != offen_.end()) {
-            Knoten& ok = *offeniter;
-            if(f(nk) >= f(ok)) continue;
-            ok = nk;
-        } else {
-            offen_.push_back(nk);
-        }
-    }
+      // Knoten mit dem geringsten Heuristik(f) Wert aus der Open List entfernen
+      std::list<Knoten>::const_iterator minele = min_element(offen_.begin(),offen_.end(),vergleicheHeuristik);
+      const Knoten& minknoten = *minele;
+      offen_.remove(minknoten);
+      // Knoten zur geschlossen Liste hinzufuegen
+
+      // wurde das Ziel gefunden? Wenn ja, abbruc
+
+      // Nachfolgeknoten(Nachbarn) auf die Open List setzen
+
+
+      //fuer all Nachbarn:
+      //        // wenn der Nachfolgeknoten bereits auf der Closed List ist - tue nichts
+
+      //        // Heuristik (f) Wert für den neuen Weg berechnen:
+      //        // Vorgängerzeiger setzen
+
+      //         // wenn der Nachfolgeknoten bereits auf der Open List ist,
+      //         // aber der neue Weg länger ist als der alte - tue nichts
+
+      //         // Vorgängerzeiger setzen
+
+      //         // f Wert des Knotens in der Open List aktualisieren
+      //         // bzw. Knoten mit f Wert in die Open List einfügen
   } while (! offen_.empty());
-  std::list<Knoten>::const_iterator iter = find(geschlossen_.begin(),geschlossen_.end(),ziel);
-  if(iter != geschlossen_.end()) {
-      pfad.push_back(*iter);
-      do {
-          iter = find(geschlossen_.begin(),geschlossen_.end(),iter->vorgaenger());
-          pfad.push_back(*iter);
-      } while (*iter != start);
-      pfad.reverse();
-  }
-  //loesche Listen wieder
+
+  //Konstruiere Pfad; Ziel sollte in geschlossen sein, wenn Pfad gefunden.
+  std::list<Koordinate> pfad;
+
+  //Kosmetik
+  pfad.reverse();
   std::cout << "Pfadlaenge:" << pfad.size() << " Knoten in offen:" << offen_.size() << " Knoten in geschklossen:"
-            << geschlossen_.size() << std::endl;
+      << geschlossen_.size() << std::endl;
+  //loesche Listen wieder
   offen_.clear();
   geschlossen_.clear();
   return pfad;
