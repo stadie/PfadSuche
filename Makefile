@@ -1,5 +1,5 @@
 #O2 for optimization, g for debugging
-CFLAGS=-Wall -O2 -g #-I. $(shell root-config --cflags)
+CFLAGS=-Wall -O2 -g --std=c++11 #-I. $(shell root-config --cflags)
 LFLAGS= #$(shell root-config --libs)
 CC=g++
 LD=g++

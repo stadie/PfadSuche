@@ -4,20 +4,20 @@
 #include <iostream>
 
 class Koordinate {
-private:
+ private:
   int x_, y_;
-public:
-  Koordinate(int x=0, int y=0) : x_(x),y_(y) {}
 
-  int x() const { return x_;}
-  int y() const { return y_;}
+ public:
+  Koordinate(int x = 0, int y = 0) : x_(x), y_(y) {}
 
+  int x() const { return x_; }
+  int y() const { return y_; }
 
-  bool operator==(const Koordinate& k) const { return x_ == k.x_ && y_ == k.y_;}
-  bool operator!=(const Koordinate& k) const { return !(*this==k);}
+  bool operator==(const Koordinate& k) const { return false; }
+  bool operator!=(const Koordinate& k) const { return !(*this == k); }
   bool operator<(const Koordinate& k) const {
-    if(x_ < k.x_) return true;
-    if(x_ == k.x_) return y_ < k.y_;
+    if (x_ < k.x_) return true;
+    if (x_ == k.x_) return y_ < k.y_;
     return false;
   }
 
@@ -30,6 +30,5 @@ public:
     return is;
   }
 };
-
 
 #endif
