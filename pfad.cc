@@ -13,6 +13,17 @@ struct F {
   }
 };
 
+struct G {
+  double operator()(const Knoten& k) {
+    return k.g();
+  }
+};
+
+struct H {
+  double operator()(const Knoten& k) {
+    return k.h();
+  }
+};
 
 
 int main() {

@@ -1,6 +1,5 @@
 #include "Karte.hh"
 
-
 std::list<Koordinate> Karte::nachbarn(const Koordinate& k) const {
   std::list<Koordinate> klist;
   for(int x = k.x() -1 ; x <= k.x()+1 ; ++x) {

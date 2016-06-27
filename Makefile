@@ -7,11 +7,11 @@ LD=g++
 #all source files
 SRCS=$(wildcard *.cc)
 
-OBJS = $(filter-out pfad.o unittest.o, $(SRCS:.cc=.o))
+OBJS = $(filter-out pfad.o unittest.o runTests.o PfadSucherTest.o, $(SRCS:.cc=.o))
 
-.PHONY: clean all
+.PHONY: clean all tests
 
-all: pfad unittest
+all: pfad unittest tests
 
 clean:
 	@rm -f *~ *.o *# *.d pfad
@@ -22,6 +22,9 @@ pfad: $(OBJS) pfad.o
 unittest:  $(OBJS) unittest.o
 	$(LD) $(LFLAGS) -o unittest $^
 
+tests: $(OBJS) runTests.o PfadSucherTest.o
+	$(LD) $(LFLAGS)  -o runTests $^ -lcppunit
+	./runTests
 
 #rules
 %.o : %.cc
