@@ -14,7 +14,7 @@ OBJS = $(filter-out pfad.o unittest.o, $(SRCS:.cc=.o))
 all: pfad unittest
 
 clean:
-	@rm -f *~ *.o *# *.d pfad
+	@rm -f *~ *.o *# *.d pfad unittest
 
 pfad: $(OBJS) pfad.o
 	$(LD) $(LFLAGS) -o pfad $^
