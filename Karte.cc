@@ -2,6 +2,13 @@
 
 std::list<Koordinate> Karte::nachbarn(const Koordinate& k) const {
   std::list<Koordinate> klist;
+  for (int x = k.x() - 1; x <= k.x() + 1; ++x) {
+    for (int y = k.y() - 1; y <= k.y() + 1; ++y) {
+      Koordinate nk(x, y);
+      if (nk == k) continue;
+      if ((*this)(nk)) klist.push_back(nk);
+    }
+  }
   return klist;
 }
 
@@ -32,6 +39,18 @@ std::ostream& operator<<(std::ostream& os, const Karte& k) {
 }
 
 std::istream& operator>>(std::istream& is, Karte& k) {
-  // lese Karte
+  unsigned int b, h;
+  is >> b >> h;
+  k.felder_.resize(b);
+  for (int x = 0; x < b; ++x) {
+    k.felder_[x].resize(h);
+  }
+  for (int y = 0; y < k.hoehe(); ++y) {
+    for (int x = 0; x < k.breite(); ++x) {
+      char c;
+      is >> c;
+      k.felder_[x][y] = (c == '.');
+    }
+  }
   return is;
 }

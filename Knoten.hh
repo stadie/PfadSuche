@@ -10,7 +10,7 @@ class Knoten : public Koordinate {
 
  public:
   Knoten(Koordinate x, double g, double h, Koordinate vorgaenger)
-      : Koordinate(x), g_(g), h_(h), vorgaenger_(vorgaenger) {}
+  : Koordinate(x), g_(g), h_(h), vorgaenger_(vorgaenger) {}
   double g() const { return g_; }  // kosten vom Start
   double h() const { return h_; }  // abstand zum Ziel
   Koordinate vorgaenger() const { return vorgaenger_; }

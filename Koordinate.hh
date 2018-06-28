@@ -8,7 +8,7 @@ class Koordinate {
   int x_, y_;
 
  public:
-  Koordinate(int x = 0, int y = 0) : x_(x), y_(y) {}
+  explicit Koordinate(int x = 0, int y = 0) : x_(x), y_(y) {}
 
   int x() const { return x_; }
   int y() const { return y_; }

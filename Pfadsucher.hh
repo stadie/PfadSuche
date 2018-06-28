@@ -11,14 +11,14 @@
 
 class Pfadsucher {
  public:
-  Pfadsucher(const Karte& k);
+  explicit Pfadsucher(const Karte& k);
   template<class Heuristik>
   std::list<Koordinate> suche(Koordinate start, Koordinate ziel, Heuristik f);
 
   template<class Heuristik>
   class HeuristikVergleich {
    public:
-    HeuristikVergleich(Heuristik f) : f_(f) {}
+    explicit HeuristikVergleich(Heuristik f) : f_(f) {}
     bool operator()(const Knoten& a, const Knoten& b) { return f_(a) < f_(b); }
 
    private:
@@ -98,7 +98,7 @@ std::list<Koordinate> Pfadsucher::suche(Koordinate start, Koordinate ziel,
     offen_.remove(minknoten);
     // Knoten zur geschlossen Liste hinzufuegen
 
-    // wurde das Ziel gefunden? Wenn ja, abbruc
+    // wurde das Ziel gefunden? Wenn ja, abbruch
 
     // Nachfolgeknoten(Nachbarn) auf die Open List setzen
 
