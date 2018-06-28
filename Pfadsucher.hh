@@ -12,10 +12,10 @@
 class Pfadsucher {
  public:
   Pfadsucher(const Karte& k);
-  template <class Heuristik>
+  template<class Heuristik>
   std::list<Koordinate> suche(Koordinate start, Koordinate ziel, Heuristik f);
 
-  template <class Heuristik>
+  template<class Heuristik>
   class HeuristikVergleich {
    public:
     HeuristikVergleich(Heuristik f) : f_(f) {}
@@ -83,7 +83,7 @@ Pfadsucher::Pfadsucher(const Karte& k) : karte_(k) {}
 //             openlist.enqueue(successor, f)
 //     end
 // end
-template <class Heuristik>
+template<class Heuristik>
 std::list<Koordinate> Pfadsucher::suche(Koordinate start, Koordinate ziel,
                                         Heuristik f) {
   HeuristikVergleich<Heuristik> vergleicheHeuristik(f);
@@ -93,7 +93,7 @@ std::list<Koordinate> Pfadsucher::suche(Koordinate start, Koordinate ziel,
   do {
     // Knoten mit dem geringsten Heuristik(f) Wert aus der Open List entfernen
     auto minele =
-        min_element(offen_.begin(), offen_.end(), vergleicheHeuristik);
+    min_element(offen_.begin(), offen_.end(), vergleicheHeuristik);
     const Knoten& minknoten = *minele;
     offen_.remove(minknoten);
     // Knoten zur geschlossen Liste hinzufuegen
