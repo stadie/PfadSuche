@@ -7,17 +7,17 @@ LD=g++
 #all source files
 SRCS=$(wildcard *.cc)
 
-OBJS = $(filter-out pfad.o unittest.o, $(SRCS:.cc=.o))
+OBJS = $(filter-out path.o unittest.o, $(SRCS:.cc=.o))
 
 .PHONY: clean all
 
-all: pfad unittest
+all: path unittest
 
 clean:
-	@rm -f *~ *.o *# *.d pfad unittest
+	@rm -f *~ *.o *# *.d path unittest
 
-pfad: $(OBJS) pfad.o
-	$(LD) $(LFLAGS) -o pfad $^
+path: $(OBJS) path.o
+	$(LD) $(LFLAGS) -o path $^
 
 unittest:  $(OBJS) unittest.o
 	$(LD) $(LFLAGS) -o unittest $^

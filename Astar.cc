@@ -1,39 +1,10 @@
-#ifndef PFADSUCHER_HH
-#define PFADSUCHER_HH
+//
+// Created by stadie on 7/2/18.
+//
 
-#include "Koordinate.hh"
-#include "Knoten.hh"
-#include "Karte.hh"
-
-#include <list>
+#include "Astar.hh"
 #include <algorithm>
 #include <iostream>
-
-class Pfadsucher {
- public:
-  explicit Pfadsucher(const Karte& k);
-  template<class Heuristik>
-  std::list<Koordinate> suche(Koordinate start, Koordinate ziel, Heuristik f);
-
-  template<class Heuristik>
-  class HeuristikVergleich {
-   public:
-    explicit HeuristikVergleich(Heuristik f) : f_(f) {}
-    bool operator()(const Knoten& a, const Knoten& b) { return f_(a) < f_(b); }
-
-   private:
-    Heuristik f_;
-  };
-
- private:
-  std::list<Knoten> offen_;
-  std::list<Knoten> geschlossen_;
-  const Karte& karte_;
-};
-
-// to get the template compiled the code has to be here
-Pfadsucher::Pfadsucher(const Karte& k) : karte_(k) {}
-
 // program a-star
 //     // Initialisierung der Open List, die Closed List ist noch leer
 //     // (die Priorität bzw. der f Wert des Startknotens ist unerheblich)
@@ -83,20 +54,18 @@ Pfadsucher::Pfadsucher(const Karte& k) : karte_(k) {}
 //             openlist.enqueue(successor, f)
 //     end
 // end
-template<class Heuristik>
-std::list<Koordinate> Pfadsucher::suche(Koordinate start, Koordinate ziel,
-                                        Heuristik f) {
-  HeuristikVergleich<Heuristik> vergleicheHeuristik(f);
+std::list<Coordinate> Astar::search(Map map, Coordinate start,
+                                    Coordinate goal) {
   // fuege start zur offen Liste
-  Knoten startknoten(start, 0, karte_.abstand(start, ziel), start);
-  offen_.push_back(startknoten);
+  Node startknoten(start, 0, map.distance(start, goal), start);
+  open_.push_back(startknoten);
   do {
     // Knoten mit dem geringsten Heuristik(f) Wert aus der Open List entfernen
-    auto minele =
-    min_element(offen_.begin(), offen_.end(), vergleicheHeuristik);
-    const Knoten& minknoten = *minele;
-    offen_.remove(minknoten);
-    // Knoten zur geschlossen Liste hinzufuegen
+    auto minele = min_element(open_.begin(), open_.end(), CompF());
+    const Node &n = *minele;
+    open_.remove(n);
+    // zur Closed List hinzufuegen
+    closed_[n.coord()] = n;
 
     // wurde das Ziel gefunden? Wenn ja, abbruch
 
@@ -105,7 +74,7 @@ std::list<Koordinate> Pfadsucher::suche(Koordinate start, Koordinate ziel,
     // fuer all Nachbarn:
     //        // wenn der Nachfolgeknoten bereits auf der Closed List ist - tue
     //        nichts
-
+    // if(closed_.find(nn.coord()) == closed_.end();
     //        // Heuristik (f) Wert für den neuen Weg berechnen:
     //        // Vorgängerzeiger setzen
 
@@ -116,20 +85,19 @@ std::list<Koordinate> Pfadsucher::suche(Koordinate start, Koordinate ziel,
 
     //         // f Wert des Knotens in der Open List aktualisieren
     //         // bzw. Knoten mit f Wert in die Open List einfügen
-  } while (!offen_.empty());
+  } while (!open_.empty());
 
   // Konstruiere Pfad; Ziel sollte in geschlossen sein, wenn Pfad gefunden.
-  std::list<Koordinate> pfad;
+  std::list<Coordinate> path;
+  Node last = closed_[goal];
 
   // Kosmetik
-  pfad.reverse();
-  std::cout << "Pfadlaenge:" << pfad.size()
-            << " Knoten in offen:" << offen_.size()
-            << " Knoten in geschklossen:" << geschlossen_.size() << std::endl;
+  path.reverse();
+  std::cout << "Pfadlaenge:" << path.size()
+            << " Knoten in offen:" << open_.size()
+            << " Knoten in geschklossen:" << closed_.size() << std::endl;
   // loesche Listen wieder
-  offen_.clear();
-  geschlossen_.clear();
-  return pfad;
+  open_.clear();
+  closed_.clear();
+  return path;
 }
-
-#endif
