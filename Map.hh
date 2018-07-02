@@ -13,7 +13,7 @@ private:
 
 public:
   Map() : fields_(0) {}
-  double distance(const Coordinate &a, const Coordinate &b) const { return -1; }
+  double distance(const Coordinate &a, const Coordinate &b) const { return std::max(std::abs((int)a.x()-(int)b.x()), std::abs((int)a.y()-(int)b.y()));}
   bool operator()(const Coordinate &k) const { return fields_[k.x()][k.y()]; }
   unsigned long height() const {
     return fields_.empty() ? 0 : fields_[0].size();
