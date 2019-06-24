@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <memory>
 
 int main() {
   Map map;
@@ -18,7 +19,7 @@ int main() {
   Coordinate goal(40, 13);
 
   std::cout << "A*:" << std::endl;
-  PathFinder *pf = new Astar();
+  std::unique_ptr<PathFinder> pf(new Astar());
   std::list<Coordinate> path = pf->search(map, start, goal);
   std::cout << "Laenge:" << path.size() << std::endl;
   map.print(path);

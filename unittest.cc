@@ -9,7 +9,7 @@
 
 int main() {
   std::cout << "###########################################################\n";
-  std::cout << "Teste Koordinate:\n";
+  std::cout << "Teste Coordinate:\n";
   Coordinate k12(1, 2);
   Coordinate k43(4, 3);
   Coordinate k15(1, 5);

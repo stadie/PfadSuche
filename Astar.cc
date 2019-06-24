@@ -66,7 +66,7 @@ std::list<Coordinate> Astar::search(Map map, Coordinate start,
     open_.remove(n);
     // zur Closed List hinzufuegen
     closed_[n.coord()] = n;
-
+    //....
     // wurde das Ziel gefunden? Wenn ja, abbruch
 
     // Nachfolgeknoten(Nachbarn) auf die Open List setzen
@@ -90,12 +90,13 @@ std::list<Coordinate> Astar::search(Map map, Coordinate start,
   // Konstruiere Pfad; Ziel sollte in geschlossen sein, wenn Pfad gefunden.
   std::list<Coordinate> path;
   Node last = closed_[goal];
+  //....
 
   // Kosmetik
   path.reverse();
   std::cout << "Pfadlaenge:" << path.size()
             << " Knoten in offen:" << open_.size()
-            << " Knoten in geschklossen:" << closed_.size() << std::endl;
+            << " Knoten in geschlossen:" << closed_.size() << std::endl;
   // loesche Listen wieder
   open_.clear();
   closed_.clear();

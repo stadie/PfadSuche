@@ -2,15 +2,7 @@
 
 std::list<Coordinate> Map::neighbors(const Coordinate &k) const {
   std::list<Coordinate> klist;
-  for (unsigned int x = k.x() - 1; x <= k.x() + 1; ++x) {
-    for (unsigned int y = k.y() - 1; y <= k.y() + 1; ++y) {
-      Coordinate nk(x, y);
-      if (nk == k)
-        continue;
-      if (fields_[x][y])
-        klist.push_back(nk);
-    }
-  }
+  //...
   return klist;
 }
 
@@ -41,18 +33,6 @@ std::ostream &operator<<(std::ostream &os, const Map &k) {
 }
 
 std::istream &operator>>(std::istream &is, Map &k) {
-  unsigned int b, h;
-  is >> b >> h;
-  k.fields_.resize(b);
-  for (unsigned int x = 0; x < b; ++x) {
-    k.fields_[x].resize(h);
-  }
-  for (unsigned int y = 0; y < k.height(); ++y) {
-    for (unsigned int x = 0; x < k.width(); ++x) {
-      char c;
-      is >> c;
-      k.fields_[x][y] = (c == '.');
-    }
-  }
+  //...
   return is;
 }

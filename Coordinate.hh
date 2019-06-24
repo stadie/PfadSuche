@@ -15,7 +15,8 @@ public:
   unsigned int y() const { return y_; }
 
   bool operator==(const Coordinate &k) const {
-    return k.x_ == x_ && k.y_ == y_;
+    //...
+    return false;
   }
   bool operator!=(const Coordinate &k) const { return !(*this == k); }
   bool operator<(const Coordinate &k) const {
